@@ -1,0 +1,55 @@
+<!DOCTYPE html> 
+<!--告诉浏览器，此文档版本，上面的标记为html5版本-->
+
+<html>
+
+	<head>
+		
+		<meta http-equiv="content-type" content="text/html;charset=gb2312" /> 
+		<meta name="description" content="HTML Document" />
+		<!--告诉搜索引擎，此文档的大致内容description-->
+		<meta name="keywords" content="HTML,宋词,js，d3" />
+		<!--告诉搜索引擎，此文档的关键字是什么，keywords-->
+		<title>宋词</title>
+		<style name1="style.css">p{color:blue}
+		</style>
+		<style name1="style.css2">.pstyle{color:red;background-color:yellow;font-size:40px;text-align:center;}
+		</style>
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<style>#index {color: green;background-color: black;font-size:30px;}</style>
+		
+		<style>p span {color: purple;background-color: black;font-size:30px;}</style>
+		<style>#siderbar{width:25%;height:100%;float:left;clear:left;border:1px solid gray;border-radius:5px;}</style>
+		<style>#maincontent{width:73%;height:100%;float:right;clear:right;text-align:center;border:1px solid gray;border-radius:5px;font-size:20px;}</style>
+		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	</head>
+	<body>
+		<script>
+		var a;
+		console.log(a)
+		console.log(typeof a)
+		
+		fori: for (var i=0;i<3;i++){
+			for (var j=0;j<3;j++){
+				if(i==1 && j==2){
+					break fori//跳出指定循环
+				
+				}
+				console.log(i+'\t'+j)
+			}
+		
+		}
+		function Persion(name,age){
+			this.name=name,
+			this.age=age,
+			this.growUp=function(){
+				this.age+=1;
+			}
+		}
+		var wangwu=new Persion('wangwu',15)
+		
+		</script>
+		
+		
+	</body>
+</html>

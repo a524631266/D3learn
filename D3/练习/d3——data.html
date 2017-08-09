@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+	<body>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> 
+		<p>Lion</p>
+		<p>Tiger</p>
+		<p>Leopard</p>
+	<script>
+		var p=d3.select('body').selectAll("p");
+		console.log(p)
+		var dataset=[3,6,9];
+		var update=p.data(dataset)
+		console.log(update)
+		var update=p.datum(dataset)
+		console.log(update)
+		for (var i =0 ; i<p.lenght;i++){
+			
+		}
+		
+	</script>  
+	</body>
+</html>
