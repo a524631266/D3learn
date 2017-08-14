@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>.time{font-family:Cursive;font-size:40px;stroke:black;stroke-width:2;}</style>
+		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> 
+	</head>
+	<body>
+	<div style="padding:50px;background-color:gray"></div>
+	
+	<script>
+		var width = 400;
+		var height = 400;
+		var svg=d3.select('div')
+				.append('svg')
+				.style("background-color","yellow")
+				.attr('width',width)
+				.attr('height',height);
+		svg.append("rect")
+			.attr("x",200)
+			.attr("y",100)
+			.attr("width",100)
+			.attr("height",100)
+			.on("click",function(){
+				console.log(d3.mouse(this));//以svg左上角为相对（0，0）一般存储在d3.event
+			});
+	</script>
+	<script>
+		var width = 400;
+		var height = 400;
+		var svg=d3.select('div')
+				.append('svg')
+				.style("background-color","steelblue")
+				.attr('width',width)
+				.attr('height',height);
+		
+		var  circles=[{cx:150 ,cy: 200,r:30},
+						{cx: 220,cy: 200,r:30},
+						{cx: ,cy: ,r:}
+						{cx: ,cy: ,r:}
+					]
+	</script>
+	
+	<!--行为篇 d3.behavior.drag/zoom-->
+	<script>
+		var local=[{x:200,y:100}];
+		
+		var drag=d3.behavior.drag()
+					.origin(function(d,i){
+						console.log("初始化");//在拖拽的过程中只运行一次
+						return {x:d.x,y:d.y}
+					})
+					.on("dragstart",function(d){
+						console.log("开始拖拽");//在拖拽的过程中只运行一次
+					})
+					.on("dragend",function(d){
+						console.log("结束拖拽");//在拖拽的过程中只运行一次
+					})
+					.on("drag",function(d){
+						console.log("拖拽过程 mouse"+d3.mouse(this)[0]+": rect:"+d3.event.x);//在拖拽的过程中不断运行
+						d3.select(this)
+							.attr("x",d.x=d3.event.x)//d3.event.x   d3.mouse(this)[0] 
+							//两者的区别是d3.event.x返回的是图形的左上角的坐标或者起始位置，而d3.mouse(this)[0]返回的是鼠标当前的位置
+							.attr("y",d.y=d3.event.y);//d3.event.y    d3.mouse(this)[1] 同上
+					});
+		d3.select('rect')
+			.data(local)
+			.attr('fill',"white")
+			.call(drag);
+		
+	</script>
+	</body>
+</html>

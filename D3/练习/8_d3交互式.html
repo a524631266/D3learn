@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>.time{font-family:Cursive;font-size:40px;stroke:black;stroke-width:2;}</style>
+		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> 
+	</head>
+	<body>
+	<p id="mypara">Click Here</p>
+	
+	
+	<script>
+		//dom api 写法
+		//var para=document.getElementById("mypara");
+		//para.onclick = function(){
+			//this.innerHTML="Thank you for clicking!";
+		
+		//}
+		d3.select('#mypara')
+			.on("click.one",function(){
+			d3.select(this).text("Thank you for clicking1!");
+			}
+			).on("click.sencond",function(){
+			d3.select(this).text("Thank you for clicking2!");
+			}
+			).on("click.sencond",null)//对第二个监听器做删除动作
+			;
+	</script>
+		<script>
+		var xAxisWidth=500;
+		var yAxisWidth=400;
+		var width=600;//svg wid
+		var height=600;//svg height
+		var dataset=[30,60,100,10,300,20,52,256,106,150,1000];
+		var svg=d3.select("body").append("svg")
+				.attr("width",width)
+				.attr("height",height);
+		var yScale=d3.scale.linear()
+					.domain([0,d3.max(dataset)])
+					.range([0,yAxisWidth]);
+					
+		var xScale=d3.scale.ordinal()
+					.domain(d3.range(dataset.length))
+					.rangeRoundBands([0,xAxisWidth],0.2);
+					
+		//定义坐标轴
+
+		
+		var rectWidth=30;
+		var padding={top:20,right:20,bottom:20,left:40};
+		var rect=svg.selectAll(".myrect")
+					.data(dataset)
+					.enter()
+					.append("rect")
+					.attr('fill','steelblue')
+					.attr("x",function(d,i){return padding.left+xScale(i)})
+					.attr("y",function(d,i){return height -padding.bottom-yScale(d)})
+					.attr("width",xScale.rangeBand())
+					.attr("height",function(d){return yScale(d)})
+					.on('mouseover',function(){//触发事件1
+						d3.select(this).attr('fill','yellow')
+					})
+					.on('mouseout',function(){//触发事件2
+						d3.select(this).transition()
+						.duration(500)
+						.attr('fill','steelblue')
+					})
+					.attr("class","myrect");
+					
+		var text=svg.selectAll(".mytext")
+					.data(dataset)
+					.enter()
+					.append("text")
+					.attr("fill","white")
+					.attr("font-size","10px")
+					.attr("text-anchor","middle")
+					.attr("x",function(d,i){return padding.left+xScale(i)})
+					.attr("y",function(d,i){return height -padding.bottom-yScale(d)})
+					.attr("dx",rectWidth/2)
+					.attr("dy","1em")
+					.text(function(d){
+						return d;
+					});
+		yScale.range([yAxisWidth,0]);
+		
+		var xAxis=d3.svg.axis()
+					.scale(xScale)//定义比例尺
+					.orient("bottom")//刻度方向向下 
+		;
+		var yAxis=d3.svg.axis()
+					.scale(yScale)
+					.orient("left")
+					.tickSize(0,0);
+					
+					
+		var gAxis=svg.append("g")
+					.attr("transform","translate("+padding.left+","+(height-padding.bottom)+")")//平移80,80
+					.attr("class","axis")
+					.call(xAxis)
+					;
+		var gAxis=svg.append("g")
+					.attr("transform","translate("+padding.left+","+(height-yAxisWidth-padding.bottom)+")")
+					.attr("class","axis")
+					.call(yAxis)
+					;	
+					
+	</script> 
+	<svg class='svg1' height=400 width=400> <svg>
+	<!--键盘的监听事件需要添加到body中，很好理解，键盘无任何对象，一般打开浏览器中可以相应到，而不是在元素中-->
+	<script>
+		var characters=["A","S","D","F"];
+		var svg=d3.select('body').select('.svg1')
+		var color=d3.scale.category20();
+		
+		var rects = svg.selectAll("#myrect2")
+						.data(characters)
+						.enter()
+						.append('rect')
+						.attr('x',function(d,i){return 10+i*60;})
+						.attr('y',150)
+						.attr('width',55)
+						.attr('height',55)
+						.attr('rx',5)
+						.attr('ry',5)
+						.attr('fill',function(d,i){return color(i);});
+		var texts = svg.selectAll("#myrect2")
+						.data(characters)
+						.enter()
+						.append('text')
+						.attr('x',function(d,i){return 10+i*60;})
+						.attr('y',150)
+						.attr('dx',10)
+						.attr('dy',25)
+						.attr('text-anchor','right')
+						.attr('fill',"white")
+						.attr('font-size',24)
+						.text(function(d){return d;});		
+		
+		d3.select('body')
+			.on("keydown",function(){
+				rects.attr('fill',function(d,i){
+					if ( d == String.fromCharCode(d3.event.keyCode)){
+						return 'yellow'
+					}else{
+						return color(i);
+					}
+				})
+			})
+			.on("keyup",function(){
+				rects.attr('fill',function(d,i){
+					if ( d == String.fromCharCode(d3.event.keyCode)){
+						return color(i)
+					}else{
+						return color(i)
+					}
+				})
+			});
+	</script>
+	</body>
+</html>
