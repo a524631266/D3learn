@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+	<body>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> 
+	<p>a</p>
+	<p>b</p>
+	<svg></svg>
+	<script>
+		var dataset=[50,43,120,87,99,167,142];
+		var width=400;//svg wid
+		var height=400;//svg height
+		
+		var svg=d3.select("body").append("svg")
+				.attr("width",width)
+				.attr("height",height);
+		
+		//放置矩形
+		var padding={top:20,right:20,bottom:20,left:20};
+		
+		var rectStep=35;
+		
+		var rectWidth=30;
+				
+		var rect=svg.selectAll(".myrect")
+				.data(dataset)
+				.enter()
+				.append("rect")
+				.attr("fill","steelblue")
+				.attr("x",function(d,i){
+					return padding.left + i*rectStep;
+				}
+				)
+				.attr("y",function(d,i){
+					return height -padding.bottom- d;
+				}
+				)
+				.attr("width",rectWidth)
+				.attr("height",function(d){
+					return d;
+				}
+				);
+		var text=svg.selectAll(".mytext")
+				.data(dataset)
+				.enter()
+				.append("text")
+				.attr("fill","white")
+				.attr("font-size","14px")
+				.attr("text-anchor","middle")
+				.attr("x",function(d,i){
+					return padding.left + i*rectStep;
+				}
+				)
+				.attr("y",function(d,i){
+					return height -padding.bottom- d;
+				}
+				)
+				.attr("dx",rectWidth/2)
+				.attr("dy","1em")
+				.text(function(d){
+					return d;
+				});		
+		
+		;
+		function drow(){
+			svg.selectAll(".myrect").remove();
+			var updateRect=svg.selectAll(".myrect").data(dataset);
+			
+			var enterRect=updateRect.enter();
+			
+			var exitRect=updateRect.exit();
+			
+			var updateText=svg.selectAll(".mytext").data(dataset);
+			
+			var enterText=updateText.enter();
+			
+			var exitText=updateText.exit();
+			
+			//updateRect 
+			updateRect.attr("fill","green")
+				.attr("x",function(d,i){
+					return padding.left + i*rectStep;
+				}
+				)
+				.attr("y",function(d,i){
+					return height -padding.bottom- d;
+				}
+				)
+				.attr("width",rectWidth)
+				.attr("height",function(d){
+					return d;
+				}
+				);
+			//enterRect 处理方式
+			enterRect.append("rect")
+				.attr("fill","green")
+				.attr("x",function(d,i){
+					return padding.left + i*rectStep;
+				}
+				)
+				.attr("y",function(d,i){
+					return height -padding.bottom- d;
+				}
+				)
+				.attr("width",rectWidth)
+				.attr("height",function(d){
+					return d;
+				}
+				);
+			//exitText 处理方式
+			exitRect.remove();
+			updateText.attr("fill","white")
+				.attr("font-size","14px")
+				.attr("text-anchor","middle")
+				.attr("x",function(d,i){
+					return padding.left + i*rectStep;
+				}
+				)
+				.attr("y",function(d,i){
+					return height -padding.bottom- d;
+				}
+				)
+				.attr("dx",rectWidth/2)
+				.attr("dy","1em")
+				.text(function(d){
+					return d;
+				});		
+			enterText.append("text")
+				.attr("fill","white")
+				.attr("font-size","14px")
+				.attr("text-anchor","middle")
+				.attr("x",function(d,i){
+					return padding.left + i*rectStep;
+				}
+				)
+				.attr("y",function(d,i){
+					return height -padding.bottom- d;
+				}
+				)
+				.attr("dx",rectWidth/2)
+				.attr("dy","1em")
+				.text(function(d){
+					return d;
+				});	
+			exitText.remove();
+		};
+		function mysort(){
+			dataset.sort(d3.ascending);
+			drow();
+		};
+		function myadd(){
+			dataset.push(Math.floor(Math.random()*100));
+			drow();
+		};
+	</script>  
+	<button type="button" onclick ="mysort()">排序</button>
+	<button type="button" onclick ="myadd()">增加数据</button>
+	
+	
+	</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+	<body>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> 
+	<p>a</p>
+	<p>b</p>
+	<script>
+		var dataset=[3,1,2,10];
+		var sumd=d3.sum(dataset);
+		console.log(sumd);
+		var sumd=d3.sum(dataset,function(d){return d*3});
+		console.log(sumd);
+		//升序 [1,3,10]
+		dataset.sort(d3.ascending);
+		var quit=d3.quantile(dataset,0.5);
+		console.log(dataset);
+		dataset=[10,13,16,19,22,25];
+		<!--获取数组位置-->
+		d3.shuffle(dataset);
+		console.log(dataset);
+		console.log(d3.bisectLeft(dataset,11));//返回0
+		console.log(d3.bisectRight(dataset,11));//返回2
+		<!--插入数据-->
+		dataset.splice(3,0,10);//在第三个数组位置插入数据，并让原先的第三个位置之后的数据往后移动一位，删除0个数据
+		console.log(dataset);
+		var animals=["cat","dog","chicken"];
+		animals.sort(d3.ascending);
+		console.log(animals);
+		console.log(d3.bisectLeft(animals,"dog"));
+		<!--permute需要提供数组改变的位置-->
+		console.log(d3.permute(animals,[2,0,1]));
+		
+		var matrix=[[1,2],[3,4],[5,6]];
+		console.log(d3.zip(matrix[0],matrix[1],matrix[2]));
+		console.log(d3.transpose(matrix));
+		
+		
+		<!--map-->
+		var data1=[1,2,3];
+		var map = d3.map(data1,function(d){return d});
+		console.log(map);
+		console.log(map.keys());
+		console.log(map.values());
+		console.log(map.entries());
+		
+		//嵌套结构 nest，方法有key和entries
+		var persons=[{id:100,name:"zhangsan",year:1989,home:"bj"}
+					,{id:101,name:"lisi",year:1979,home:"sh"}
+					,{id:102,name:"ww",year:1959,home:"hz"}];
+		var nest= d3.nest()
+				.key(function(d){return d.home})
+				.sortKeys(d3.ascending)
+				.key(function(d){return d.year})
+				.entries(persons);
+		console.log(nest);
+	</script>  
+	</body>
+</html>

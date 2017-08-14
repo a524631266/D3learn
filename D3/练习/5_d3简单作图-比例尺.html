@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+	<body>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> 
+
+	<svg></svg>
+	<script>
+		var linear = d3.scale.linear()
+					.domain([0,500])
+					.range([0,100])
+					.clamp(true);
+		console.log(linear(560));
+		console.log(linear.ticks(8));
+		
+		var quantize=d3.scale.quantize()
+						.domain([0,10])
+						.range(["A","B","C","D","E"]);
+		console.log(quantize(11));
+		<!--数值比例尺运用,并画图-->
+		
+		var quantize=d3.scale.quantize()
+						.domain([0,50])
+						.range(["#888","#666","#444","#222","#000"]);
+						
+		var r=[45,35,25,15,5];
+		
+		var svg=d3.select("body").append('svg')
+					.attr("width",400)
+					.attr("height",400);
+		
+		var circle=svg.selectAll('circle')
+				.data(r)
+				.enter()
+				.append('circle')
+				.attr("cx",function(d,i){return 150+i*30})
+				.attr("cy",200)
+				.attr("r",function(d,i){return d})
+				//.attr("fill",function(d,i){return quantize(d)});
+				.attr("fill",function(d,i){return d3.scale.category10(i)});
+		var quantize1=d3.scale.quantize()
+						.domain([0,2,4,10])//量子比例尺，中间为5=(0+10)/2，[0,5)&[5,+)
+						.range([1,100]);
+		var quantile1=d3.scale.quantile()
+						.domain([0,2,4,10])//分位比例尺，中间为3=(2+4)/2，[0,3)&[3,+)
+						.range([1,100]);
+		console.log(quantize1(4.9));
+		console.log(quantile1(3));
+		console.log(quantile1.quantiles());
+		//与分位比例尺类似的阈值比例尺
+		var threshold=d3.scale.threshold()
+						.domain([10,20,30])//[-,10) [10,20) [20,30) [30,+)
+						.range(["red","green","yellow","black"]);
+		console.log(threshold(9));
+		console.log(threshold.invertExtent('yellow'));
+		
+		
+		
+		<!--序列比例尺-->
+		var ordinal=d3.scale.ordinal()
+					.domain([1,2,3,4,5])
+					.range([10,20,30,40,50]);
+		console.log("ordinal 1:"+ordinal(1));
+		console.log("ordinal 3:"+ordinal(3));
+		console.log("ordinal 3.5:"+ordinal(3.5));
+		console.log("ordinal 8:"+ordinal(8));
+		console.log("ordinal 2:"+ordinal(2));
+		console.log("ordinal 8:"+ordinal(0));
+	</script>  
+	<button type="button" onclick ="mysort()">排序</button>
+	<button type="button" onclick ="myadd()">增加数据</button>
+	
+	
+	</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+	<body>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> 
+	<!--颜色-->
+	<script>
+		var color1=d3.rgb(40,80,0);
+		var color2=d3.rgb("red");
+		var color3=d3.rgb("rgb(0,255,255)");
+		console.log(color1.brighter(0));
+		console.log(color1.brighter(1));
+		console.log(color1.brighter(2));
+		console.log(color1.brighter(3));
+		console.log(color2.darker(2));
+		
+		console.log(color3.hsl());
+		console.log(color3.toString());
+		
+		var a =d3.rgb(255,0,0);//红色
+		var b =d3.rgb(0,255,0);//绿色
+		
+		var compute=d3.interpolate(a,b);
+	</script> 
+	<!--路径生产器-->
+	<script>
+		var lines=[80,120,160,200,250,290];
+		//线段生成器
+		var linePath=d3.svg.line()
+						.x(function(d){return d;})
+						.y(function(d,i){return i%2 == 0 ? 40 : 120 ;})
+						.interpolate("cardinal")// linear,linear-closed,step,base,bundle,cardinal,monotone,cardinal-open
+						.tension(0.5)
+						.defined(function(d){return d<260;});//过滤，d小于260的
+		var svg=d3.select('body').append('svg')
+					.attr("height",400)
+					.attr("width",400);
+		svg.append('path')
+			.attr("d",linePath(lines))//画图
+			.attr("stroke","black")
+			.attr("stroke-width","3px")
+			.attr("fill","none")
+			;
+		console.log(linePath(lines));//线段生成器生成的数据 M80,40L120,120L160,40L200,120L250,40L290,120	
+		
+	</script> 
+	
+	<script>
+		var dataset=[{startAngle:0,endAngle:Math.PI*0.75},
+					{startAngle:Math.PI*0.75,endAngle:Math.PI*1.2},
+					{startAngle:Math.PI*1.2,endAngle:Math.PI*1.5},
+					{startAngle:Math.PI*1.5,endAngle:Math.PI*2}];
+		//弧生成器
+		var arcPath=d3.svg.arc()
+						.innerRadius(0)
+						.outerRadius(100);
+		var svg=d3.select('body').append('svg')
+					.attr("height",400)
+					.attr("width",400);
+					
+		var color = d3.scale.category10();
+		
+		svg.selectAll('path')
+			.data(dataset)
+			.enter()
+			.append('path')
+			.attr("d",function(d){return arcPath(d)})//画图
+			.attr("transform","translate(250,250)")
+			.attr("stroke","black")
+			.attr("stroke-width","3px")
+			.attr("fill",function(d,i){return color(i)})
+			;
+		svg.selectAll('text')
+			.data(dataset)
+			.enter()
+			.append('text')
+			.attr("transform",function(d){return "translate(250,250)"+"translate("+arcPath.centroid(d)+")"})//计算弧的相对中心位置
+			.attr("text-anchor","middle")
+			.attr("font-size","18px")
+			.attr("fill","white")
+			.text(function(d){
+				return Math.floor((d.endAngle-d.startAngle)*180/Math.PI)+"° ";
+			})
+			;
+		console.log(arcPath(dataset[0]));//
+		console.log(arcPath.centroid(dataset[0]));
+		console.log(arcPath.centroid(dataset[1]));
+	</script> 
+	<script>
+		//生成30个数量
+		var n=30;
+		var dataset=[];
+		
+		for(var i =0;i<n;i++){
+			dataset.push({
+				size: Math.random()*30+200,
+				type: d3.svg.symbolTypes[Math.floor(Math.random()*d3.svg.symbolTypes.length)]//随机选一个图形
+			});
+		}
+		//符号生成器
+		var symbol=d3.svg.symbol()
+						.size(function(d){return d.size;})
+						.type(function(d){return d.type;});
+						
+						
+		var svg=d3.select('body').append('svg')
+					.attr("height",400)
+					.attr("width",400);
+					
+		var color = d3.scale.category20();
+		
+		svg.selectAll('path')
+			.data(dataset)
+			.enter()
+			.append('path')
+			.attr("d",function(d){return symbol(d)})//画图
+			.attr("transform",function(d,i){
+				var x=100+i%5*50;
+				var y=100+Math.floor(i/5)*50;
+				return "translate("+x+","+y+")";
+			})
+			.attr("fill",function(d,i){return color(i)})
+			;
+			
+		console.log(arcPath(dataset[0]));//
+		console.log(arcPath.centroid(dataset[0]));
+		console.log(arcPath.centroid(dataset[1]));
+	</script> 
+	</body>
+</html>
