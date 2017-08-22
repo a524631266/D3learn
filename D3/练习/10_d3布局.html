@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>.time{font-family:Cursive;font-size:40px;stroke:black;stroke-width:2;}</style>
+		<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script> 
+	</head>
+	<body>
+	<div style="padding:50px;background-color:gray"></div>
+	<!--饼图-->
+	<script>
+		var dataset=[
+				['小米',60.8],
+				['华为',41.3],
+				['苹果',46.6],
+				['三星',58.4],
+				['酷派',40.1],
+				['其他',111.5]
+		];
+		
+		//1.数据转换
+		var pie=d3.layout.pie()//创建布局
+					.value(function(d){return d[1];});
+		
+		var piedata=pie(dataset);
+		
+		console.log(piedata);
+		//2.绘制，用弧生成器
+		var width=400;
+		var height=400;
+		
+		var outerRadius = width /3;
+		var innerRadius = 0;
+		
+		var arc=d3.svg.arc()
+					.innerRadius(innerRadius)
+					.outerRadius(outerRadius);
+					
+		var color = d3.scale.category20();
+		
+		var svg=d3.select('body').append('svg')
+						.attr('height',height)
+						.attr('width',width);
+		
+		var arcs=svg.selectAll("g")
+					.data(piedata)
+					.enter()
+					.append('g')
+					.attr('transform',
+						'translate('+(width/2)+','+(height/2)+')');
+		
+		arcs.append('path')
+				.attr('fill',function(d,i){
+					return color(i);
+				})
+				.attr('d',function(d){
+					return arc(d);
+				});
+						
+	</script>
+	</body>
+</html>

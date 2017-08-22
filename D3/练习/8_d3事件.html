@@ -35,9 +35,43 @@
 		
 		var  circles=[{cx:150 ,cy: 200,r:30},
 						{cx: 220,cy: 200,r:30},
-						{cx: ,cy: ,r:}
-						{cx: ,cy: ,r:}
-					]
+						{cx: 150,cy: 270,r:30},
+						{cx: 220,cy: 270,r:30}
+					];
+		var xscale=d3.scale.linear()
+						.domain([0,100])
+						.range([0,width]);
+		var yscale=d3.scale.linear()
+						.domain([0,200])
+						.range([0,height]);
+		var zoom=d3.behavior.zoom()
+					.scaleExtent([1,10])
+					.x(xscale)
+					.y(yscale)
+					.on("zoomstart",function(d){console.log("kaishi suofang")})
+					.on("zoomend",function(d){console.log("jiesu suofang")})
+					.on("zoom",function(d){
+						console.log("x 的定义域："+xscale.domain());
+						console.log("x 的值域："+xscale.range());
+						console.log("y 的定义域："+yscale.domain());
+						console.log("y 的值域："+yscale.range());
+						d3.select(this).attr('transform',
+						'translate('+ d3.event.translate+')'+
+						'scale('+ d3.event.scale + ')'
+						)
+					});
+		var g = svg.append('g')
+					.call(zoom);//每个圆同时缩放
+		g.selectAll('circle')
+			.data(circles)
+			.enter()
+			.append('circle')
+			.attr('cx',function(d){return d.cx})
+			.attr('cy',function(d){return d.cy})
+			.attr('r',function(d){return d.r})
+			.attr('fill','black')
+			//.call(zoom);//每个圆可自由缩放
+		
 	</script>
 	
 	<!--行为篇 d3.behavior.drag/zoom-->
